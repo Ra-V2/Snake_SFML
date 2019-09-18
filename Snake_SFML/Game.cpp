@@ -23,7 +23,8 @@ void Game::StartGame()
 		sf::Time start = clock.getElapsedTime();
 		ProcessInput(window, snake);
 		Update(window, snake);
-		Draw(window, snake);
+		if(!lose)
+			Draw(window, snake);
 		sf::Time stop = clock.getElapsedTime();
 		sf::sleep(start + MS_PER_FRAME - stop);
 	}
@@ -133,9 +134,9 @@ void Game::Collision(Snake & snake)
 	if (snake.CollisionFruit())
 	{
 		snake.Growth();
-
+		snake.SpawnFruit();
 	}
-	if (snake.CollisionWall())
+	if (snake.CollisionSnake() || snake.CollisionWall())
 	{
 		lose = true;
 	}

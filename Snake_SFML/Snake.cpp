@@ -1,8 +1,9 @@
 #include "Snake.h"
 #include "Game.h"
 #include <iostream>
+#include <random>
 
-Snake::Snake() : length(3), sdir(direction::STOP), shapeSize(20.f,20.f), movePixels(25)
+Snake::Snake() : length(50), sdir(direction::STOP), shapeSize(20.f,20.f), movePixels(25)
 {
 	shape.resize(1000);
 	shapePosition.resize(1000);
@@ -18,6 +19,7 @@ Snake::Snake() : length(3), sdir(direction::STOP), shapeSize(20.f,20.f), movePix
 	shape[0].setFillColor(sf::Color::Color(140, 140, 140));
 	fruit.setFillColor(sf::Color::Red);
 	fruit.setSize(sf::Vector2f(shapeSize));
+	SpawnFruit();
 
 }
 
@@ -97,11 +99,6 @@ void Snake::Control(sf::RenderWindow & window)
 			}
 		}
 	}
-
-	if (!fruitSpawned)
-	{
-		SpawnFruit(sf::Vector2f(200, 200));
-	}
 }
 
 void Snake::Growth()
@@ -120,18 +117,42 @@ bool Snake::CollisionFruit()
 
 bool Snake::CollisionWall()
 {
-	if (shapePosition[0].x >= Game::winSizeX || shapePosition[0].x <= 0)
+	if (shapePosition[0].x >= Game::winSizeX || shapePosition[0].x < 0)
 		return true;
-	else if (shapePosition[0].y >= Game::winSizeY+10 || shapePosition[0].y <= 0)
+	else if (shapePosition[0].y >= Game::winSizeY || shapePosition[0].y < 0)
 		return true;
 	else
 		return false;
 }
 
-
-void Snake::SpawnFruit(sf::Vector2f location)
+bool Snake::CollisionSnake()
 {
-	fruit.setPosition(location.x, location.y);
-	fruitPosition = fruit.getPosition();
-	fruitSpawned = true;
+	for (int i = 1; i <= length; i++)
+	{
+		if (shapePosition[0] == shapePosition[i])
+			return true;
+	}
+	return false;
+}
+
+
+void Snake::SpawnFruit()
+{
+	std::random_device rd;
+	std::mt19937 eng(rd());
+	std::uniform_int_distribution<> x(1, 31);
+	std::uniform_int_distribution<> y(1, 23);
+	fruit.setPosition(x(eng)*movePixels, y(eng)*movePixels);
+
+	for (int i = 0; i <= length; i++)
+	{
+		if (shapePosition[i] == fruitPosition)
+		{
+			fruit.setPosition(x(eng)*movePixels, y(eng)*movePixels); //TODO problem z respawn na snake
+		}
+	}
+		fruitPosition = fruit.getPosition();
+
+	std::cout << fruitPosition.x << " " << fruitPosition.y << std::endl;
+	
 }

@@ -1,8 +1,8 @@
 #include "Game.h"
 
 //TODO 
-//respawn owocow
-//kolizje weza
+//respawn owoca na snaku
+//poruszanie sie na ukos
 //menu
 
 int main()

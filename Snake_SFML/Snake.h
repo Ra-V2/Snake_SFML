@@ -13,7 +13,6 @@ private:
 	sf::RectangleShape fruit;
 	sf::Vector2f fruitPosition;
 	sf::Vector2f shapeSize;
-	bool fruitSpawned;
 
 public:
 	std::vector<sf::RectangleShape> shape;
@@ -24,8 +23,9 @@ public:
 	void Growth();
 	bool CollisionFruit();
 	bool CollisionWall();
+	bool CollisionSnake();
 
-	void SpawnFruit(sf::Vector2f location);
+	void SpawnFruit();
 	inline direction GetSdir() { return sdir; }
 	inline int GetLength() { return length; }
 	inline sf::RectangleShape GetFruit() { return fruit; }
