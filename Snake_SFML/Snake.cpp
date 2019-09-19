@@ -3,11 +3,12 @@
 #include <iostream>
 #include <random>
 
-Snake::Snake() : length(50), sdir(direction::STOP), shapeSize(20.f,20.f), movePixels(25)
+Snake::Snake() : length(3), sdir(direction::STOP), shapeSize(20.f,20.f), movePixels(25)
 {
 	shape.resize(1000);
 	shapePosition.resize(1000);
-	for (int i = 0; i < length; i++)
+
+	for (int i = 0; i < length; i++) //set up snake
 	{
 		shape[i].setSize(sf::Vector2f(shapeSize));
 		shape[i].setPosition(400, 500 + i*movePixels);
@@ -16,16 +17,18 @@ Snake::Snake() : length(50), sdir(direction::STOP), shapeSize(20.f,20.f), movePi
 
 	}
 
-	shape[0].setFillColor(sf::Color::Color(140, 140, 140));
-	fruit.setFillColor(sf::Color::Red);
+	shape[0].setFillColor(sf::Color::Color(140, 140, 140)); //set snake head color
+	fruit.setFillColor(sf::Color::Red); //set fruit color
+
 	fruit.setSize(sf::Vector2f(shapeSize));
+
 	SpawnFruit();
 
 }
 
 Snake::~Snake() {}
 
-void Snake::Control(sf::RenderWindow & window)
+void Snake::Control(sf::RenderWindow & window) //move snake
 {	
 	if (sdir != direction::STOP)
 	{
@@ -101,21 +104,21 @@ void Snake::Control(sf::RenderWindow & window)
 	}
 }
 
-void Snake::Growth()
+void Snake::Growth() //snake growth up
 {
 	length++;
 	shape[length - 1].setSize(sf::Vector2f(shapeSize));
 }
 
-bool Snake::CollisionFruit()
+bool Snake::CollisionFruit() //detect snake hit fruit
 {
-	if(shapePosition[0] == fruitPosition)
+	if (shapePosition[0] == fruitPosition)
 		return true;
 	else
 		return false;
 }
 
-bool Snake::CollisionWall()
+bool Snake::CollisionWall() //detect snake hit wall
 {
 	if (shapePosition[0].x >= Game::winSizeX || shapePosition[0].x < 0)
 		return true;
@@ -125,7 +128,7 @@ bool Snake::CollisionWall()
 		return false;
 }
 
-bool Snake::CollisionSnake()
+bool Snake::CollisionSnake() //detect snake hit himself
 {
 	for (int i = 1; i <= length; i++)
 	{
@@ -142,17 +145,23 @@ void Snake::SpawnFruit()
 	std::mt19937 eng(rd());
 	std::uniform_int_distribution<> x(1, 31);
 	std::uniform_int_distribution<> y(1, 23);
-	fruit.setPosition(x(eng)*movePixels, y(eng)*movePixels);
+	bool safe = true;
 
-	for (int i = 0; i <= length; i++)
+	do   // check if fruit respawn on snake
 	{
-		if (shapePosition[i] == fruitPosition)
-		{
-			fruit.setPosition(x(eng)*movePixels, y(eng)*movePixels); //TODO problem z respawn na snake
-		}
-	}
+		fruit.setPosition(x(eng)*movePixels, y(eng)*movePixels);
 		fruitPosition = fruit.getPosition();
 
-	std::cout << fruitPosition.x << " " << fruitPosition.y << std::endl;
+		for (int i = 0; i < length; i++)
+		{
+			if (shapePosition[i] == fruitPosition)
+			{
+				safe = false;
+				break;
+			}
+			else
+				safe = true;
+		}
+	} while (!safe);
 	
 }
