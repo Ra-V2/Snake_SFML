@@ -72,59 +72,66 @@ void Game::Draw(sf::RenderWindow & window, Snake & snake)
 
 void Game::ProcessInput(sf::RenderWindow & window, Snake & snake) //set direction
 {
-	sf::Event eventclose;
-	while (window.pollEvent(eventclose))
+
+	if (snake.GetSdir() == direction::STOP) //start snake position
 	{
-		if (eventclose.type == sf::Event::Closed)
-			window.close();
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
+		{
+			snake.SetDirection(direction::UP);
+		}
+
+		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
+		{
+			snake.SetDirection(direction::LEFT);
+		}
+
+		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
+		{
+			snake.SetDirection(direction::RIGHT);
+		}
 	}
-	if (sf::Event::KeyPressed)
+
+
+	sf::Event event;
+	while (window.pollEvent(event))
 	{
-		if (snake.GetSdir() == direction::STOP)
+		if (event.type == sf::Event::Closed) //close window while playing
+			window.close();
+
+		if (event.type == sf::Event::KeyPressed) //normal snake control
 		{
-			if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
-			{
-				snake.SetDirection(direction::UP);
-			}
+				if (snake.GetSdir() == direction::UP || snake.GetSdir() == direction::DOWN)
+				{
 
-			else if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
-			{
-				snake.SetDirection(direction::LEFT);
-			}
+					if (event.key.code == sf::Keyboard::A)
+					{
+						snake.SetDirection(direction::LEFT);
+						break;
+					}
 
-			else if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
-			{
-				snake.SetDirection(direction::RIGHT);
-			}
+					else if (event.key.code == sf::Keyboard::D)
+					{
+						snake.SetDirection(direction::RIGHT);
+						break;
+					}
+				}
+
+				else if (snake.GetSdir() == direction::RIGHT || snake.GetSdir() == direction::LEFT)
+				{
+					if (event.key.code == sf::Keyboard::W)
+					{
+						snake.SetDirection(direction::UP);
+						break;
+					}
+
+					else if (event.key.code == sf::Keyboard::S)
+					{
+						snake.SetDirection(direction::DOWN);
+						break;
+					}
+				}
+
 		}
-
-		else if (snake.GetSdir() == direction::UP || snake.GetSdir() == direction::DOWN)
-		{
-
-			if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
-			{
-				snake.SetDirection(direction::LEFT);
-			}
-
-			else if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
-			{
-				snake.SetDirection(direction::RIGHT);
-			}
-		}
-
-		else if (snake.GetSdir() == direction::RIGHT || snake.GetSdir() == direction::LEFT)
-		{
-			if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
-			{
-				snake.SetDirection(direction::UP);
-			}
-
-			else if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
-			{
-				snake.SetDirection(direction::DOWN);
-			}
-		}
-
 	}
 }
 
