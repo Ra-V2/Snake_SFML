@@ -1,9 +1,7 @@
 #include "Game.h"
 
 //TODO 
-//respawn owoca na snaku
 //poruszanie sie na ukos
-//menu
 
 int main()
 {

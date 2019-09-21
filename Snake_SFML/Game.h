@@ -19,6 +19,7 @@ public:
 	~Game();
 
 	void StartGame();
+	bool GameOver(sf::RenderWindow & window, Snake & snake, int score);
 	void ProcessInput(sf::RenderWindow & window, Snake & snake);
 	void Update(sf::RenderWindow & window, Snake & snake);
 	void Draw(sf::RenderWindow & window, Snake & snake);
