@@ -32,6 +32,11 @@ void Game::StartGame()
 		sf::Time stop = clock.getElapsedTime();
 		sf::sleep(start + MS_PER_FRAME - stop);
 		score = snake.GetLength();
+		if (score == 100)
+		{
+			lose = true;
+			break;
+		}
 	}
 
 	if (GameOver(window, snake, score)) //check if the font has loaded

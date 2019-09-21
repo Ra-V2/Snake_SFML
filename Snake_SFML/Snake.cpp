@@ -5,8 +5,8 @@
 
 Snake::Snake() : length(3), sdir(direction::STOP), shapeSize(20.f,20.f), movePixels(25)
 {
-	shape.resize(1000);
-	shapePosition.resize(1000);
+	shape.resize(101);
+	shapePosition.resize(101);
 
 	for (int i = 0; i < length; i++) //set up snake
 	{
