@@ -4,7 +4,7 @@
 
 Snake::Snake() : length(3), sdir(direction::STOP)
 {
-	shape.resize(101);
+	shape.resize(101); //sets size of vectors
 	shapePosition.resize(101);
 
 	for (int i = 0; i < length; i++) //set up snake
@@ -13,7 +13,6 @@ Snake::Snake() : length(3), sdir(direction::STOP)
 		shape[i].setPosition(400, 500 + i*Game::movePixels);
 
 		shapePosition[i] = shape[i].getPosition();
-
 	}
 
 	shape[0].setFillColor(sf::Color::Color(140, 140, 140)); //set snake head color

@@ -5,8 +5,7 @@
 Fruit::Fruit(const Snake & snake)
 {
 	fruit.setFillColor(sf::Color::Red); //set fruit color
-
-	fruit.setSize(sf::Vector2f(Game::shapeSize,Game::shapeSize));
+	fruit.setSize(sf::Vector2f(Game::shapeSize,Game::shapeSize)); //set fruit size
 
 	SpawnFruit(snake);
 }
@@ -17,7 +16,8 @@ void Fruit::SpawnFruit(const Snake & snake)
 	std::mt19937 eng(rd());
 	std::uniform_int_distribution<> x(1, 31);
 	std::uniform_int_distribution<> y(1, 23);
-	bool safe = true;
+
+	bool spawn = true;
 
 	do   // check if fruit respawn on snake
 	{
@@ -28,12 +28,12 @@ void Fruit::SpawnFruit(const Snake & snake)
 		{
 			if (snake.shapePosition[i] == fruitPosition)
 			{
-				safe = false;
+				spawn = false;
 				break;
 			}
 			else
-				safe = true;
+				spawn = true;
 		}
-	} while (!safe);
+	} while (!spawn);
 
 }

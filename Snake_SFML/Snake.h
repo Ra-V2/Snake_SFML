@@ -10,13 +10,17 @@ class Snake
 	friend class Fruit;
 
 private:
+
 	int length;
 	direction sdir;
+
 	std::vector<sf::RectangleShape> shape;
 	std::vector<sf::Vector2f> shapePosition;
 
 public:
+
 	Snake();
+
 	void Control(sf::RenderWindow & window);
 	void Growth();
 
@@ -29,5 +33,4 @@ public:
 	inline int GetLength() { return length; }
 
 	inline void SetDirection(direction dir) { sdir = dir; }
-
 };

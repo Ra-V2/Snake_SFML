@@ -68,7 +68,6 @@ void Game::Draw(sf::RenderWindow & window, Snake & snake, Fruit & fruit)
 
 }
 
-
 void Game::ProcessInput(sf::RenderWindow & window, Snake & snake) //set direction
 {
 

@@ -6,6 +6,7 @@
 class Game
 {
 private:
+
 	static constexpr short FPS = 10;
 	sf::Time MS_PER_FRAME;
 	bool lose;
