@@ -1,38 +1,37 @@
 #include "Game.h"
-#include <iostream>
+#include "Fruit.h"
 
 Game::Game()
 {
 	MS_PER_FRAME = sf::milliseconds(1000/FPS);
 
 	lose = false; //checks whether to continue playing
-
-}
-
-Game::~Game()
-{
+	
+	StartGame();
 }
 
 void Game::StartGame()
 {
-	sf::RenderWindow window(sf::VideoMode(winSizeX, winSizeY, 32), "SNAKE");
+	sf::RenderWindow window(sf::VideoMode(winSizeX, winSizeY, 32), "SNAKE by RaV");
 	int score = 0;
 	do
 	{
+
 	Snake snake;
+	Fruit fruit(snake);
 	sf::Clock clock;
+
 	while (window.isOpen() && !lose) //game loop
 	{
-
 		sf::Time start = clock.getElapsedTime();
 		ProcessInput(window, snake);
-		Update(window, snake);
+		Update(window, snake, fruit);
 		if (!lose)
-			Draw(window, snake);
+			Draw(window, snake,fruit);
 		sf::Time stop = clock.getElapsedTime();
 		sf::sleep(start + MS_PER_FRAME - stop);
 		score = snake.GetLength();
-		if (score == 100)
+		if (score == 100) //if player beat score 100 loop ends
 		{
 			lose = true;
 			break;
@@ -53,18 +52,18 @@ void Game::StartGame()
 	} while (window.isOpen());
 }
 
-void Game::Update(sf::RenderWindow & window, Snake & snake)
+void Game::Update(sf::RenderWindow & window, Snake & snake, Fruit & fruit)
 {
-	Collision(snake);
+	Collision(snake, fruit);
 	snake.Control(window);
 }
 
-void Game::Draw(sf::RenderWindow & window, Snake & snake)
+void Game::Draw(sf::RenderWindow & window, Snake & snake, Fruit & fruit)
 {
 	window.clear();
-	for(int i = 0; snake.GetLength() > i; i++ )
+	for(int i = 0; snake.GetLength() > i; i++ ) //loop for all shapes
 		window.draw(snake.GetShape()[i]);
-	window.draw(snake.GetFruit());
+	window.draw(fruit.GetFruit());
 	window.display();
 
 }
@@ -135,12 +134,12 @@ void Game::ProcessInput(sf::RenderWindow & window, Snake & snake) //set directio
 	}
 }
 
-void Game::Collision(Snake & snake) //check collision
+void Game::Collision(Snake & snake, Fruit & fruit) //check collision
 {
-	if (snake.CollisionFruit())
+	if (snake.CollisionFruit(fruit))
 	{
 		snake.Growth();
-		snake.SpawnFruit();
+		fruit.SpawnFruit(snake);
 	}
 	if (snake.CollisionSnake() || snake.CollisionWall())
 	{

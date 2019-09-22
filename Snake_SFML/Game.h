@@ -1,7 +1,7 @@
 #pragma once
-#include "Snake.h"
 #include "SFML/Graphics.hpp"
-#include <vector>
+#include "Snake.h"
+#include "Fruit.h"
 
 class Game
 {
@@ -14,14 +14,15 @@ public:
 
 	static constexpr short winSizeX = 800;
 	static constexpr short winSizeY = 600;
+	static constexpr float movePixels = 25.f;
+	static constexpr float shapeSize = 20.f;
 
 	Game();
-	~Game();
 
 	void StartGame();
 	bool GameOver(sf::RenderWindow & window, Snake & snake, int score);
 	void ProcessInput(sf::RenderWindow & window, Snake & snake);
-	void Update(sf::RenderWindow & window, Snake & snake);
-	void Draw(sf::RenderWindow & window, Snake & snake);
-	void Collision(Snake & snake);
+	void Update(sf::RenderWindow & window, Snake & snake, Fruit & fruit);
+	void Draw(sf::RenderWindow & window, Snake & snake, Fruit & fruit);
+	void Collision(Snake & snake, Fruit & fruit);
 };
